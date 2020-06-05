@@ -31,5 +31,7 @@ RSpec.describe NetPromoterScore, type: :model do
     it { should validate_presence_of(:respondent_id) }
     it { should validate_presence_of(:rated_object_class) }
     it { should validate_presence_of(:rated_object_id) }
+
+    it { should validate_inclusion_of(:score).in_range(0..10) }
   end
 end
