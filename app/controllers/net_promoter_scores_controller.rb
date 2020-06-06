@@ -6,7 +6,12 @@ class NetPromoterScoresController < ApplicationController
   def index; end
 
   def create
-    render json: @nps, status: :created if @nps.save
+    # here we will use OK status for created and updated records for simplicity
+    if @nps.save
+      render json: @nps, status: :ok
+    else
+      render json: { error: 'something went wrong' }, status: :bad_request
+    end
   end
 
   def update

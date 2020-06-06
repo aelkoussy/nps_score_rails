@@ -3,6 +3,8 @@
 require 'rails_helper'
 require 'jwt'
 
+# By passing the params in a JWT to the user, we guarantee that no one can modify the params, the only param that can be adjusted is the score
+
 payload = {
   touchpoint: 'realtor_feedback',
   respondent_class: 'seller',
@@ -17,21 +19,20 @@ RSpec.describe 'add a NPS:', type: :request do
   it 'throw exception if param is missing' do
     post '/net_promoter_scores', params: {
       score: 9
-      # token: token
     }
     expect(response).to have_http_status(:bad_request)
   end
 
-  it 'returns a created status' do
+  it 'returns an ok status' do
     post '/net_promoter_scores', params: {
       score: 9,
       token: token
     }
-    expect(response).to have_http_status(:created)
+    expect(response).to have_http_status(:ok)
   end
 end
 
-RSpec.describe 'add a NPS that was created before (shall be update instead of create', type: :request do
+RSpec.describe 'add a NPS that was created before (shall update the record not create)', type: :request do
   before do
     post '/net_promoter_scores', params: {
       score: 5,
@@ -40,7 +41,7 @@ RSpec.describe 'add a NPS that was created before (shall be update instead of cr
   end
 
   it 'returns an ok status' do
-    expect(response).to have_http_status(:created)
+    expect(response).to have_http_status(:ok)
   end
 end
 
