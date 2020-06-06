@@ -23,7 +23,7 @@ RSpec.describe 'add a NPS:', type: :request do
     expect(response).to have_http_status(:bad_request)
   end
 
-  it 'returns an ok status' do
+  it 'returns an ok status if record is valid and added' do
     post '/net_promoter_scores', params: {
       score: 9,
       token: token
@@ -40,7 +40,7 @@ RSpec.describe 'add a NPS that was created before (shall update the record not c
     }
   end
 
-  it 'returns an ok status' do
+  it 'returns an ok status if record is updated' do
     expect(response).to have_http_status(:ok)
   end
 end
@@ -53,7 +53,7 @@ RSpec.describe 'update a NPS: ', type: :request do
     }
   end
 
-  it 'returns an ok status' do
+  it 'returns an ok status if the record is updated' do
     expect(response).to have_http_status(:ok)
   end
 end
