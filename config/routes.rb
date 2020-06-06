@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # Delete won't be allowed as the resource shall not be deleted
+  resources :net_promoter_scores, only: %i[index create update]
 end
