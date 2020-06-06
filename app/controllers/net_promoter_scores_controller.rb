@@ -15,7 +15,11 @@ class NetPromoterScoresController < ApplicationController
   end
 
   def update
-    render json: @nps, status: :ok if @nps.save
+    if @nps.save
+      render json: @nps, status: :ok
+    else
+      render json: { error: 'something went wrong' }, status: :bad_request
+    end
   end
 
   private
