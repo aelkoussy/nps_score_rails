@@ -33,5 +33,8 @@ RSpec.describe NetPromoterScore, type: :model do
     it { should validate_presence_of(:rated_object_id) }
 
     it { should validate_inclusion_of(:score).in_range(0..10) }
+
+    # validates uniqueness of all given params
+    it { should validate_uniqueness_of(:respondent_id).scoped_to(:touchpoint, :rated_object_class, :rated_object_id) }
   end
 end
