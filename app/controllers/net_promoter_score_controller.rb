@@ -1,0 +1,2 @@
+class NetPromoterScoreController < ApplicationController
+end
