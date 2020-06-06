@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_04_214138) do
+ActiveRecord::Schema.define(version: 2020_06_06_115527) do
 
   create_table "net_promoter_scores", force: :cascade do |t|
     t.integer "score"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2020_06_04_214138) do
     t.integer "rated_object_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["respondent_id", "touchpoint", "rated_object_class", "rated_object_id"], name: "nps_index", unique: true
   end
 
 end
