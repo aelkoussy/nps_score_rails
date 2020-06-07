@@ -1,24 +1,24 @@
-# README
+# Assumptions:
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### How to use this API:
 
-Things you may want to cover:
+- We need to create a token for each email we send, this will have all the params needs for NPS except a score
 
-* Ruby version
+- We send this in the client , maybe as a query param or anything
 
-* System dependencies
+### The user submits the values to our api like this:
 
-* Configuration
+homeday.com/api/v1/net_promotor_score?token=aksfiq3hdni12n3ic1jn2d.1md2hi12em1odnmi12bner1wd....
+and a param of score
 
-* Database creation
+- we take the 2 params: score & token, parse the token and find the record with it's params, or create a new record in the NPS,
+  then we add score to that and save to the DB
 
-* Database initialization
+### Known limitations:
 
-* How to run the test suite
+Using the given params to the DB can be slow, it would be better to save in the NPS the following:
+score, touchpoint (enum or a ref on a touchpoint table), respondent_uuid, rated_uuid
 
-* Services (job queues, cache servers, search engines, etc.)
+with all the above numeric or UUID , we gain better performance and integrity
 
-* Deployment instructions
-
-* ...
+To overcome these limitations, I have added a caching for the nps_scores when retrieving, as 5 mins stale data won't be a problem (we need to check this assumption)
