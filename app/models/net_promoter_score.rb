@@ -12,7 +12,7 @@ class NetPromoterScore < ApplicationRecord
 
   # given these inputs, it will calc and return the nps
   # touchpoint required, others are optional
-  def self.calc_nps(touchpoint, responder_class, rated_object_class)
+  def self.calc_nps(touchpoint, responder_class = nil, rated_object_class = nil)
     scores = where(touchpoint: touchpoint)
     unless responder_class.blank?
       scores = scores.where(respondent_class: responder_class)
