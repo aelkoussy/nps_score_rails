@@ -4,14 +4,6 @@ require 'rails_helper'
 
 # By passing the params in a JWT to the user, we guarantee that no one can modify the params, the only param that can be adjusted is the score
 
-payload = {
-  touchpoint: 'realtor_feedback',
-  respondent_class: 'seller',
-  respondent_id: '1523',
-  rated_object_class: 'realtor',
-  rated_object_id: '421'
-}
-
 token = NetPromoterScore.generate_token(
   'realtor_feedback',
   'seller',
