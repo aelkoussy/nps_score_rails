@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class NetPromoterScoresController < ApplicationController
-  before_action :nps_params, only: %i[create update]
+  before_action :nps_params, only: :create
 
   def index
     @nps_score = NetPromoterScore.calc_nps(nps_query_params[:touchpoint], nps_query_params[:respondent_class], nps_query_params[:rated_object_class])
@@ -11,15 +11,7 @@ class NetPromoterScoresController < ApplicationController
   def create
     # here we will use OK status for created and updated records for simplicity
     if @nps.save
-      render json: @nps, status: :ok
-    else
-      render json: { error: 'something went wrong' }, status: :bad_request
-    end
-  end
-
-  def update
-    if @nps.save
-      render json: @nps, status: :ok
+      render json: @nps.id, status: :ok
     else
       render json: { error: 'something went wrong' }, status: :bad_request
     end
