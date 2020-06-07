@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class NetPromoterScore < ApplicationRecord
+  require 'jwt'
+
   validates_presence_of :score, :touchpoint, :respondent_class, :respondent_id, :rated_object_class, :rated_object_id
   validates_inclusion_of :score, in: 0..10
 
@@ -30,5 +32,24 @@ class NetPromoterScore < ApplicationRecord
       nps = (scores.promotors.size.to_f / scores.size - scores.detractors.size.to_f / scores.size) * 100
       nps.round(2)
     end
+  end
+
+  # Generate a JWT with the claims given
+  # TODO: add a sensible default expiry date for this to avoid it being valid forever
+  def self.generate_token(touchpoint, respondent_class, respondent_id, rated_object_class, rated_object_id)
+    payload = {
+      touchpoint: touchpoint,
+      respondent_class: respondent_class,
+      respondent_id: respondent_id,
+      rated_object_class: rated_object_class,
+      rated_object_id: rated_object_id
+    }
+    token = JWT.encode payload, ENV['SECRET_KEY'], 'HS512'
+  end
+
+  def self.parse_token(token)
+    decoded_token = JWT.decode token, ENV['SECRET_KEY'], true, { algorithm: 'HS512' }
+    # .first as the decoded_token is an array having the payload as the first element
+    payload = decoded_token&.first
   end
 end

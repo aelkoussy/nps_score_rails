@@ -28,9 +28,7 @@ class NetPromoterScoresController < ApplicationController
   private
 
   def check_token_and_initialize_nps
-    @decoded_token = JWT.decode @token, ENV['SECRET_KEY'], true, { algorithm: 'HS512' }
-    # .first as the decoded_token is an array having the payload as the first element
-    @payload = @decoded_token&.first
+    @payload = NetPromoterScore.parse_token(@token)
 
     @nps = NetPromoterScore.find_or_initialize_by(@payload)
     @nps.score = @score

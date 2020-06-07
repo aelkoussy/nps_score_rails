@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'jwt'
 
 # By passing the params in a JWT to the user, we guarantee that no one can modify the params, the only param that can be adjusted is the score
 
@@ -13,7 +12,13 @@ payload = {
   rated_object_id: '421'
 }
 
-token = JWT.encode payload, ENV['SECRET_KEY'], 'HS512'
+token = NetPromoterScore.generate_token(
+  'realtor_feedback',
+  'seller',
+  '1523',
+  'realtor',
+  '421'
+)
 
 RSpec.describe 'add a NPS:', type: :request do
   it 'throw exception if param is missing' do
