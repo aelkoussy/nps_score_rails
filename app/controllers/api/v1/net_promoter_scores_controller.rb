@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class NetPromoterScoresController < ApplicationController
+class Api::V1::NetPromoterScoresController < ApplicationController
   before_action :nps_params, only: :create
 
   def index

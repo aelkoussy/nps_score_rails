@@ -26,14 +26,14 @@ NetPromoterScore.create(array_of_nps)
 
 RSpec.describe 'add a NPS:', type: :request do
   it 'throw exception if param is missing' do
-    post '/net_promoter_scores', params: {
+    post '/api/v1/net_promoter_scores', params: {
       score: 9
     }
     expect(response).to have_http_status(:bad_request)
   end
 
   it 'returns an ok status if record is valid and added' do
-    post '/net_promoter_scores', params: {
+    post '/api/v1/net_promoter_scores', params: {
       score: 9,
       token: token
     }
@@ -43,7 +43,7 @@ end
 
 RSpec.describe 'add a NPS that was created before (shall update the record not create)', type: :request do
   before do
-    post '/net_promoter_scores', params: {
+    post '/api/v1/net_promoter_scores', params: {
       score: 5,
       token: token
     }
@@ -56,7 +56,7 @@ end
 
 RSpec.describe 'Get NPS with given params: ', type: :request do
   it 'returns an ok status if touchpoint is given and returns a correct number' do
-    get '/net_promoter_scores/', params: {
+    get '/api/v1/net_promoter_scores/', params: {
       touchpoint: 'realtor_feedback'
     }
     expect(response).to have_http_status(:ok)
@@ -64,7 +64,7 @@ RSpec.describe 'Get NPS with given params: ', type: :request do
   end
 
   it 'returns an ok status if touchpoint & respondent_class are given and returns a correct number' do
-    get '/net_promoter_scores/', params: {
+    get '/api/v1/net_promoter_scores/', params: {
       touchpoint: 'realtor_feedback',
       respondent_class: 'buyer'
     }
@@ -72,7 +72,7 @@ RSpec.describe 'Get NPS with given params: ', type: :request do
     expect(response.body).to eq('100.0')
   end
   it 'returns an ok status if all params are given and returns a correct number' do
-    get '/net_promoter_scores/', params: {
+    get '/api/v1/net_promoter_scores/', params: {
       touchpoint: 'realtor_feedback',
       respondent_class: 'seller',
       rated_object_class: 'realtor'
@@ -81,7 +81,7 @@ RSpec.describe 'Get NPS with given params: ', type: :request do
     expect(response.body).to eq('57.14')
   end
   it 'returns bad_request status if touchpoint is missing' do
-    get '/net_promoter_scores/'
+    get '/api/v1/net_promoter_scores/'
     expect(response).to have_http_status(:bad_request)
   end
 end
