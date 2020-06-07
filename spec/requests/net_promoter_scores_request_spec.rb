@@ -57,3 +57,25 @@ RSpec.describe 'update a NPS: ', type: :request do
     expect(response).to have_http_status(:ok)
   end
 end
+
+RSpec.describe 'Get NPS with given params: ', type: :request do
+  it 'returns an ok status if touchpoint is given' do
+    get '/net_promoter_scores/', params: {
+      touchpoint: 'realtor_feedback'
+    }
+    expect(response).to have_http_status(:ok)
+  end
+
+  it 'returns an ok status if all params are given' do
+    get '/net_promoter_scores/', params: {
+      touchpoint: 'realtor_feedback',
+      respondent_class: 'seller',
+      rated_object_class: 'realtor'
+    }
+    expect(response).to have_http_status(:ok)
+  end
+  it 'returns bad_request status if touchpoint is missing' do
+    get '/net_promoter_scores/'
+    expect(response).to have_http_status(:bad_request)
+  end
+end
