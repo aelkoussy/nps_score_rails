@@ -21,6 +21,6 @@ class NetPromoterScore < ApplicationRecord
       scores = scores.where(rated_object_class: rated_object_class)
     end
 
-    nps = (scores.promotors.count.to_f / scores.count - scores.detractors.count.to_f / scores.count).round(2) * 100
+    nps = (scores.promotors.size.to_f / scores.size - scores.detractors.size.to_f / scores.size).round(2) * 100
   end
 end
