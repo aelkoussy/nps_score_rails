@@ -20,6 +20,18 @@ RSpec.describe NetPromoterScore, type: :model do
     )
   end
 
+  array_of_nps = [{ score: 9, respondent_id: '1523', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421' },
+                  { score: 10, respondent_id: '2412', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421' },
+                  { score: 3, respondent_id: '2415', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421' },
+                  { score: 8, respondent_id: '2444', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421' },
+                  { score: 9, respondent_id: '2745', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421' },
+                  { score: 9, respondent_id: '6234', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421' },
+                  { score: 9, respondent_id: '4213', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421' },
+                  { score: 9, respondent_id: '15123', touchpoint: 'realtor_feedback', respondent_class: 'buyer', rated_object_class: 'realtor', rated_object_id: '421' },
+                  { score: 9, respondent_id: '12512', touchpoint: 'realtor_feedback', respondent_class: 'buyer', rated_object_class: 'realtor', rated_object_id: '421' }]
+
+  NetPromoterScore.create(array_of_nps)
+
   it 'is valid with valid attributes' do
     expect(subject).to be_valid
   end
@@ -36,5 +48,12 @@ RSpec.describe NetPromoterScore, type: :model do
 
     # validates uniqueness of all given params
     it { should validate_uniqueness_of(:respondent_id).scoped_to(:touchpoint, :rated_object_class, :rated_object_id) }
+  end
+
+  describe '.calc_nps' do
+    it 'filters the scores based on given params and gets the calculated nps' do
+      nps_score = described_class.calc_nps('realtor_feedback', 'seller', 'realtor')
+      expect(nps_score).to eq(57.14)
+    end
   end
 end
