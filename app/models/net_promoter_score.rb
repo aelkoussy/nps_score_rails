@@ -16,7 +16,9 @@ class NetPromoterScore < ApplicationRecord
   # touchpoint required, others are optional
 
   # Suggested improvement: use a better search strategy here, maybe Elasticsearch or PostgreSQL FTS
-  # or limit all the params to numbers of text
+  # or limit all the params to numbers instead of text
+
+  # caching is used for 5 mins to speed up the results retrieval if it is queried heavily
   def self.calc_nps(touchpoint, responder_class = nil, rated_object_class = nil)
     cache_key = 'nps_score/' + touchpoint.to_s + responder_class.to_s + rated_object_class.to_s
 
