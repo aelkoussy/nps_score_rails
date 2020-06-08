@@ -2,13 +2,15 @@
 
 ### How to use this API:
 
-- We need to create a token for each email we send, this will have all the params needs for NPS except a score
+- We need to create a token for each email we send, this will have all the params needs for NPS except a score:
 
-- We send this in the client , maybe as a query param or anything
+`Using NetPromoterScore.generate_token(touchpoint, respondent_class, respondent_id, rated_object_class, rated_object_id)`
+
+- We send this in the client , maybe as a query param or anything (that the client will post as a param in the post request)
 
 ### The user submits the values to our api like this:
 
-homeday.com/api/v1/net_promotor_score?token=aksfiq3hdni12n3ic1jn2d.1md2hi12em1odnmi12bner1wd....
+`/api/v1/net_promotor_score?token=aksfiq3hdni12n3ic1jn2d.1md2hi12em1odnmi12bner1wd....`
 and a param of score
 
 - we take the 2 params: score & token, parse the token and find the record with it's params, or create a new record in the NPS,
