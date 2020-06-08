@@ -24,3 +24,5 @@ score, touchpoint (enum or a ref on a touchpoint table), respondent_uuid, rated_
 with all the above numeric or UUID , we gain better performance and integrity
 
 To overcome these limitations, I have added a caching for the nps_scores when retrieving, as 5 mins stale data won't be a problem (we need to check this assumption)
+
+We can add a sensible expiry date for the tokens to avoid it being valid forever
