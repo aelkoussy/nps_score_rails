@@ -45,4 +45,9 @@ class Api::V1::NetPromoterScoresController < ApplicationController
   rescue_from ActionController::ParameterMissing do |e|
     render json: { error: e.message }, status: :bad_request
   end
+
+  # Handle hacking attempts with the NPS
+  rescue_from JWT::VerificationError do |_e|
+    render json: { error: 'invalid request' }, status: :forbidden
+  end
 end

@@ -58,6 +58,17 @@ RSpec.describe 'add a NPS that was created before (shall update the record not c
     updated_nps = NetPromoterScore.find_by(respondent_id: '1523', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421')
     expect(updated_nps.score).to eq(3)
   end
+
+  it 'rejects update if token is tampered' do
+    some_payload = { respondent_id: '1523', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421' }
+    tampered_token = JWT.encode some_payload, "Some wrong secret key, as hackers don't have our key", 'HS512'
+
+    post '/api/v1/net_promoter_scores', params: {
+      score: 3,
+      token: tampered_token
+    }
+    expect(response).to have_http_status(:forbidden)
+  end
 end
 
 RSpec.describe 'Get NPS with given params: ', type: :request do
