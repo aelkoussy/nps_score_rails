@@ -50,7 +50,13 @@ RSpec.describe 'add a NPS that was created before (shall update the record not c
   end
 
   it 'returns an ok status if record is updated' do
+    post '/api/v1/net_promoter_scores', params: {
+      score: 3,
+      token: token
+    }
     expect(response).to have_http_status(:ok)
+    updated_nps = NetPromoterScore.find_by(respondent_id: '1523', touchpoint: 'realtor_feedback', respondent_class: 'seller', rated_object_class: 'realtor', rated_object_id: '421')
+    expect(updated_nps.score).to eq(3)
   end
 end
 
