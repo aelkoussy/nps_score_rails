@@ -24,12 +24,8 @@ class NetPromoterScore < ApplicationRecord
 
     Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
       scores = where(touchpoint: touchpoint)
-      unless responder_class.blank?
-        scores = scores.where(respondent_class: responder_class)
-      end
-      unless rated_object_class.blank?
-        scores = scores.where(rated_object_class: rated_object_class)
-      end
+      scores = scores.where(respondent_class: responder_class) unless responder_class.blank?
+      scores = scores.where(rated_object_class: rated_object_class) unless rated_object_class.blank?
 
       nps = (scores.promotors.size.to_f / scores.size - scores.detractors.size.to_f / scores.size) * 100
       nps.round(2)
@@ -46,12 +42,12 @@ class NetPromoterScore < ApplicationRecord
       rated_object_class: rated_object_class,
       rated_object_id: rated_object_id
     }
-    token = JWT.encode payload, ENV['SECRET_KEY'], 'HS512'
+    JWT.encode payload, ENV['SECRET_KEY'], 'HS512'
   end
 
   def self.parse_token(token)
     decoded_token = JWT.decode token, ENV['SECRET_KEY'], true, { algorithm: 'HS512' }
     # .first as the decoded_token is an array having the payload as the first element
-    payload = decoded_token&.first
+    decoded_token&.first
   end
 end
