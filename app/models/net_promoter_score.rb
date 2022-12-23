@@ -23,9 +23,9 @@ class NetPromoterScore < ApplicationRecord
     cache_key = "nps_score/#{touchpoint}-#{responder_class}-#{rated_object_class}"
 
     Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
-      scores = where(touchpoint: touchpoint)
-      scores = scores.where(respondent_class: responder_class) unless responder_class.blank?
-      scores = scores.where(rated_object_class: rated_object_class) unless rated_object_class.blank?
+      scores = where({ touchpoint: touchpoint,
+                       respondent_class: responder_class,
+                       rated_object_class: rated_object_class }.compact)
 
       nps = (promotors_average(scores) - detractors_average(scores)) * 100
       nps.round(2)
