@@ -19,17 +19,25 @@ class NetPromoterScore < ApplicationRecord
   # or limit all the params to numbers instead of text
 
   # caching is used for 5 mins to speed up the results retrieval if it is queried heavily
-  def self.calc_nps(touchpoint, responder_class = nil, rated_object_class = nil)
-    cache_key = 'nps_score/' + touchpoint.to_s + responder_class.to_s + rated_object_class.to_s
+  def self.calc_nps(touchpoint, responder_class, rated_object_class)
+    cache_key = "nps_score/#{touchpoint}-#{responder_class}-#{rated_object_class}"
 
     Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
       scores = where(touchpoint: touchpoint)
       scores = scores.where(respondent_class: responder_class) unless responder_class.blank?
       scores = scores.where(rated_object_class: rated_object_class) unless rated_object_class.blank?
 
-      nps = (scores.promotors.size.to_f / scores.size - scores.detractors.size.to_f / scores.size) * 100
+      nps = (promotors_average(scores) - detractors_average(scores)) * 100
       nps.round(2)
     end
+  end
+
+  def self.promotors_average(scores)
+    scores.promotors.size.to_f / scores.size
+  end
+
+  def self.detractors_average(scores)
+    scores.detractors.size.to_f / scores.size
   end
 
   # Generate a JWT with the claims given
